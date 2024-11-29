@@ -9,8 +9,8 @@
 # 安装基础依赖
 pip install torch transformers datasets accelerate wandb einops
 # 克隆仓库
-git clone https://github.com/your-username/chinese-llm-training.git
-cd chinese-llm-training
+git clone https://github.com/xhwSkhizein/llm-train-from-scratch
+cd llm-train-from-scratch
 ```
 
 ## 使用方法
