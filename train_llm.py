@@ -7,6 +7,18 @@ from models import CustomLLM
 from train_data import prepare_data
 
 
+def collate_fn(batch):
+    # 调试信息
+    # print("Batch type:", type(batch))
+    # print("First item type:", type(batch[0]))
+    # print("First item input_ids type:", type(batch[0]["input_ids"]))
+
+    input_ids = torch.tensor([item["input_ids"] for item in batch])
+    attention_mask = torch.tensor([item["attention_mask"] for item in batch])
+
+    return {"input_ids": input_ids, "attention_mask": attention_mask}
+
+
 def train(project_name="llm-from-scratch", run_name="base-model", wandb_config=None):
     # 1. 初始化wandb
     if wandb_config is None:
@@ -40,8 +52,9 @@ def train(project_name="llm-from-scratch", run_name="base-model", wandb_config=N
         tokenized_datasets["train"],
         batch_size=wandb.config.batch_size,
         shuffle=True,
-        pin_memory=True,  # 数据加载优化
-        num_workers=4     # 多进程数据加载
+        pin_memory=True,
+        num_workers=4,
+        collate_fn=collate_fn,
     )
 
     # 4. 初始化模型
@@ -74,6 +87,7 @@ def train(project_name="llm-from-scratch", run_name="base-model", wandb_config=N
     # 9. 训练循环
     model.train()
     total_steps = len(train_dataloader) * wandb.config.num_epochs
+    print("Start training... total steps:", total_steps)
     progress_bar = accelerator.init_trackers(
         project_name=project_name,
         config=wandb.config,
@@ -85,6 +99,10 @@ def train(project_name="llm-from-scratch", run_name="base-model", wandb_config=N
     for epoch in range(wandb.config.num_epochs):
         for step, batch in enumerate(train_dataloader):
             with accelerator.accumulate(model):
+                # 添加维度检查
+                # print("Input IDs shape:", batch["input_ids"].shape)
+                # print("Attention Mask shape:", batch["attention_mask"].shape)
+
                 outputs = model(
                     input_ids=batch["input_ids"],
                     attention_mask=batch["attention_mask"]

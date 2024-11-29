@@ -4,16 +4,16 @@ import os
 
 class TokenizerWrapper:
     """Tokenizer包装器，支持多种开源模型的tokenizer"""
-    
+
     SUPPORTED_MODELS = {
-        "qwen": "Qwen/Qwen1.5-7B",
+        "qwen": "Qwen/Qwen2.5-7B",
         "baichuan": "baichuan-inc/Baichuan2-13B-Chat",
         "chatglm": "THUDM/chatglm3-6b",
         "llama": "meta-llama/Llama-2-7b-chat-hf",
         "mistral": "mistralai/Mistral-7B-v0.1",
         # 可以继续添加其他模型
     }
-    
+
     def __init__(
         self,
         model_type: str = "qwen",
@@ -34,21 +34,21 @@ class TokenizerWrapper:
         if self.model_type not in self.SUPPORTED_MODELS and model_path is None:
             raise ValueError(f"Unsupported model type: {model_type}. "
                            f"Supported types are: {list(self.SUPPORTED_MODELS.keys())}")
-        
+
         # 确定模型路径
         model_name_or_path = model_path or self.SUPPORTED_MODELS.get(self.model_type)
-        
+
         # 初始化tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(
             model_name_or_path,
             trust_remote_code=trust_remote_code,
             use_fast=use_fast
         )
-        
+
         # 确保有pad_token
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
-            
+
     def encode(
         self,
         text: Union[str, List[str]],
@@ -67,7 +67,7 @@ class TokenizerWrapper:
             return_tensors=return_tensors,
             **kwargs
         )
-    
+
     def decode(
         self,
         token_ids: Union[int, List[int]],
@@ -76,27 +76,27 @@ class TokenizerWrapper:
     ):
         """解码token ids"""
         return self.tokenizer.decode(token_ids, skip_special_tokens=skip_special_tokens, **kwargs)
-    
+
     def __len__(self):
         """返回词表大小"""
         return len(self.tokenizer)
-    
+
     @property
     def pad_token_id(self):
         return self.tokenizer.pad_token_id
-    
+
     @property
     def eos_token_id(self):
         return self.tokenizer.eos_token_id
-    
+
     @property
     def bos_token_id(self):
         return self.tokenizer.bos_token_id
-    
+
     def save_pretrained(self, save_directory: str):
         """保存tokenizer"""
         self.tokenizer.save_pretrained(save_directory)
-    
+
     @classmethod
     def from_pretrained(
         cls,
@@ -114,7 +114,7 @@ class TokenizerWrapper:
             return cls(model_path=model_type_or_path,
                      trust_remote_code=trust_remote_code,
                      use_fast=use_fast)
-    
+
     def get_special_tokens(self):
         """获取特殊token信息"""
         return {
