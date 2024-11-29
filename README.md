@@ -7,7 +7,7 @@
 
 ```bash
 # 安装基础依赖
-pip install torch transformers datasets accelerate wandb einops sentencepiece
+pip install torch transformers datasets accelerate wandb einops
 # 克隆仓库
 git clone https://github.com/your-username/chinese-llm-training.git
 cd chinese-llm-training
@@ -146,11 +146,6 @@ chinese-llm-training/
 - Flash Attention 支持
 - 灵活的配置选项
 
-### 自定义 Tokenizer
-
-- 基于 SentencePiece
-- 支持中文分词
-- 可训练和加载已有模型
 
 ### 训练优化
 
