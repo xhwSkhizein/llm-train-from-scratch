@@ -1,39 +1,7 @@
-# Chinese LLM Training Framework
+# LLM Training from scratch on a single RTX 3090
 
-一个用于训练中文大语言模型的高效框架,支持预训练、SFT(Supervised Fine-tuning)和 DPO(Direct Preference Optimization)训练。
+一个用于训练中文大语言模型的demo代码, 支持预训练、SFT(Supervised Fine-tuning)和 DPO(Direct Preference Optimization)训练
 
-## 特性
-
-### 1. 模型架构
-
-- 基于 Transformer 的自定义 LLM 实现
-- 支持 RoPE(Rotary Position Embedding)位置编码
-- 可选的 MoE(Mixture of Experts)前馈网络
-- 支持 Flash Attention 加速
-- 支持梯度检查点(Gradient Checkpointing)
-
-### 2. 训练方法
-
-- 预训练(Pre-training)
-- 有监督微调(SFT)
-- 直接偏好优化(DPO)
-
-### 3. 性能优化
-
-- Flash Attention 加速
-- 混合精度训练(FP16)
-- 梯度累积
-- 梯度检查点
-- torch.compile 加速
-- 多进程数据加载优化
-
-### 4. 监控与可视化
-
-- wandb 集成
-- 训练损失追踪
-- GPU 内存监控
-- 实时生成示例
-- 训练进度记录
 
 ## 安装
 
@@ -134,6 +102,40 @@ chinese-llm-training/
 ├── dpo_train.py # DPO训练脚本
 └── README.md
 ```
+
+## 特性
+
+### 1. 模型架构
+
+- 基于 Transformer 的自定义 LLM 实现
+- 支持 RoPE(Rotary Position Embedding)位置编码
+- 可选的 MoE(Mixture of Experts)前馈网络
+- 支持 Flash Attention 加速
+- 支持梯度检查点(Gradient Checkpointing)
+
+### 2. 训练方法
+
+- 预训练(Pre-training)
+- 有监督微调(SFT)
+- 直接偏好优化(DPO)
+
+### 3. 性能优化
+
+- Flash Attention 加速
+- 混合精度训练(FP16)
+- 梯度累积
+- 梯度检查点
+- torch.compile 加速
+- 多进程数据加载优化
+
+### 4. 监控与可视化
+
+- wandb 集成
+- 训练损失追踪
+- GPU 内存监控
+- 实时生成示例
+- 训练进度记录
+
 
 ## 主要组件
 
